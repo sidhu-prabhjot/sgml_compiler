@@ -1,14 +1,12 @@
 JAVAC=javac
-#JFLEX=jflex
-JFLEX=/Users/dgabric/Projects/jflex/bin/jflex
 
 all: Token.class Lexer.class Scanner.class
 
 %.class: %.java
 	$(JAVAC) $^
 
-Lexer.java: tiny.flex
-	jflex tiny.flex
+Lexer.java: sgml.flex
+	jflex sgml.flex
 
 clean:
 	rm -f Lexer.java *.class *~
