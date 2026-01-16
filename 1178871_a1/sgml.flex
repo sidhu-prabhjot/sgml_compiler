@@ -19,9 +19,30 @@ import java.util.Stack;
 %{
     private static Stack<String> tagStack = new Stack<String>();
 
-    //method to retrieve the name of the tag at the top of the stacked
-    private String getTagName() {
-        return tagStack.peep();
+    //method to extract and return just the name of the tag
+    private String getTagName(String tag) {
+        StringBuilder tagName = new StringBuilder();
+
+        int i = 1;
+        boolean addCharacters = false;
+
+        while (i < tag.length() - 1) {
+
+          if (addCharacters){
+            tagName.append(tag.charAt(i));
+          }
+          
+          if (tag.charAt(i) == ' ' && tag.charAt(i + 1) != ' '){
+            addCharacters = true;
+          } else if (tag.charAt(i) != ' ' && tag.charAt(i + 1) == ' '){
+            break;
+          }
+
+          i++;
+
+        }
+
+        return tagName.toString();
     };
 %};
 
@@ -44,4 +65,16 @@ CloseTag = "</"{letter}+">"
 /*
    This section contains regular expressions and actions that will be executed when the scanner matches the associated regular expression. */
 
-   {OpenTag}    { return new Token(Token.OPEN_TAG, yytext(), yyline, yycolumn); }
+   {OpenTag}    { 
+
+      tagStack.push(getTagName(yytext()));
+    
+      return new Token(Token.OPEN_TAG, yytext(), yyline, yycolumn); 
+    
+    }
+
+    {CloeTag}   {
+
+           
+
+    }
